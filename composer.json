@@ -18,5 +18,10 @@
             "email": "t3dev@comuno.net",
             "role": "Developer"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "C1\\C1FscVideo\\": "web/typo3conf/ext/c1_fsc_video/Classes/"
+        }
+    }
 }

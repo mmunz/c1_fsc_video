@@ -15,6 +15,11 @@ $EM_CONF[$_EXTKEY] = array(
             'fluid_styled_content' => '7.5.0-7.6.99'
 		),
 	),
+    'autoload' => [
+        'psr-4' => [
+            'C1\\C1FscVideo\\' => 'Classes',
+        ]
+    ]
 );
 
 ?>
