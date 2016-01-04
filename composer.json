@@ -1,0 +1,22 @@
+{
+    "name": "c1/c1-fsc-video",
+    "type": "typo3-cms-extension",
+    "version": "0.0.1",
+    "description": "A responsive video element.",
+    "keywords": [
+        "typo3",
+        "TYPO3 CMS",
+        "vimeo",
+        "youtube",
+        "video"
+    ],
+    "homepage": "https://github.com/mmunz/c1_fsc_video",
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "Manuel Munz",
+            "email": "t3dev@comuno.net",
+            "role": "Developer"
+        }
+    ]
+}

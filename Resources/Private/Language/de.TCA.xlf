@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2015-10-05T13:07:00Z" product-name="fsc_image">
+        <header/>
+        <body>
+            <trans-unit id="c1_fsc_video" xml:space="preserve" approved="yes">
+                <source>Video</source>
+            <target state="translated">Video</target></trans-unit>
+            <trans-unit id="c1_fsc_video_description" xml:space="preserve" approved="yes">
+                <source>Single responsive video.</source>
+            <target state="translated">Einzelnes Video, responsive</target></trans-unit>
+            <trans-unit id="c1_fsc_video_preview_image" xml:space="preserve" approved="yes">
+                <source>Preview Image</source>
+            <target state="translated">Vorschaubild</target></trans-unit>
+        </body>
+    </file>
+</xliff>

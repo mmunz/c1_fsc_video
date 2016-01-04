@@ -1,0 +1,112 @@
+.c1-fsc-video {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; // Use 16:9 as default fallback
+    >figure {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        width: 100%;
+        height: auto; 
+        .fsc-image-responsive {
+            height: auto;
+            width: 100%;
+        }
+    }
+
+    img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        width: 100%;
+        height: auto;  
+    }
+
+    >iframe, >video {
+        border: 0;
+        outline: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 1s;
+        display: none;
+    }
+    /* no preview image, iframe directly embedded - for autoplay */
+    &.direct {
+        >iframe, >video {
+            opacity: 1;
+            display: block;
+        }
+        >video {
+            padding-bottom: 0;
+            width: 100%;
+            height: auto;
+        }
+    }
+    &.initialized {
+        >iframe {
+            display: block;
+            opacity: 1;
+        }
+    }
+    .caption- {
+        display: none;
+    }
+    .fsc-video-play {
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 80px;
+        height: 50px;
+        margin-top: -25px;
+        margin-left: -40px;
+        background-color: rgba(0,0,0,0.7);
+        &:hover, &:focus {
+            text-decoration: none;
+        }
+        &:after {
+            display: block;
+            margin: 0;
+            line-height: 100%;
+            content: "\25B6";
+            font-size: 45px;
+            text-align: center;
+        }
+    }
+
+    &.loading {
+        .fsc-video-play {
+            &:after {
+                height: 50px;
+                animation-name: video-loading-spin;
+                animation-duration: 3000ms;
+                animation-iteration-count: infinite;
+                animation-timing-function: linear;    
+                content: "\25cc";
+            }
+        }
+    }
+
+    .fsc-video-play-text {
+        color: #fff;
+        line-height: 50px;
+    }
+
+}
+
+
+@keyframes video-loading-spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}

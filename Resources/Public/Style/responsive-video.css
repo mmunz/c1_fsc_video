@@ -1,0 +1,81 @@
+.c1-fsc-video {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  /* no preview image, iframe directly embedded - for autoplay */ }
+  .c1-fsc-video > figure {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: auto; }
+    .c1-fsc-video > figure .fsc-image-responsive {
+      height: auto;
+      width: 100%; }
+  .c1-fsc-video img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: auto; }
+  .c1-fsc-video > iframe, .c1-fsc-video > video {
+    border: 0;
+    outline: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 1s;
+    display: none; }
+  .c1-fsc-video.direct > iframe, .c1-fsc-video.direct > video {
+    opacity: 1;
+    display: block; }
+  .c1-fsc-video.direct > video {
+    padding-bottom: 0;
+    width: 100%;
+    height: auto; }
+  .c1-fsc-video.initialized > iframe {
+    display: block;
+    opacity: 1; }
+  .c1-fsc-video .caption- {
+    display: none; }
+  .c1-fsc-video .fsc-video-play {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 50px;
+    margin-top: -25px;
+    margin-left: -40px;
+    background-color: rgba(0, 0, 0, 0.7); }
+    .c1-fsc-video .fsc-video-play:hover, .c1-fsc-video .fsc-video-play:focus {
+      text-decoration: none; }
+    .c1-fsc-video .fsc-video-play:after {
+      display: block;
+      margin: 0;
+      line-height: 100%;
+      content: "\25B6";
+      font-size: 45px;
+      text-align: center; }
+  .c1-fsc-video.loading .fsc-video-play:after {
+    height: 50px;
+    animation-name: video-loading-spin;
+    animation-duration: 3000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    content: "\25cc"; }
+  .c1-fsc-video .fsc-video-play-text {
+    color: #fff;
+    line-height: 50px; }
+
+@keyframes video-loading-spin {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg); } }
