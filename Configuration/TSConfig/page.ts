@@ -1,5 +1,5 @@
 mod {
-    web_layout.tt_content.preview.image = EXT:c1_fsc_video/Resources/Private/Templates/Preview/FscVideo.html
+    web_layout.tt_content.preview.video = EXT:c1_fsc_video/Resources/Private/Templates/Preview/FscVideo.html
     wizards.newContentElement.wizardItems.common {
         elements {
             c1_fsc_video {

@@ -61,7 +61,7 @@ class DataHandler {
                 }
                 $this->pid = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $this->id)['pid'];
                 $this->data = $tableData[$this->id];
-                if ($this->id) {
+                if ($this->id && $this->data['CType'] === 'c1_fsc_video') {
                     $files = $this->getVideos($this->id);
                     $video = $files[0];
                     // set upload storage and path for the preview to the same as for the original file
