@@ -184,7 +184,9 @@ class DataHandler {
 
         foreach ($fileObjects as $key => $value) {
             $onlineMediaHelper = $this->getOnlineMediaHelper($value->getOriginalFile());
-            $files[$key]['onlineMediaId'] = $onlineMediaHelper->getOnlineMediaId($value->getOriginalFile());
+            if ($onlineMediaHelper) {
+                $files[$key]['onlineMediaId'] = $onlineMediaHelper->getOnlineMediaId($value->getOriginalFile());
+            }
 
             $files[$key]['reference'] = $value->getReferenceProperties();
             $files[$key]['original'] = $value->getOriginalFile()->getProperties();
