@@ -25,6 +25,9 @@
                         <a class="fsc-video-play"><span class="fsc-video-play-text sr-only">PLAY</span></a>
                         <f:render section="videoType" arguments="{_all}"></f:render>
                     </div>
+                    <f:if condition="video.description">
+                        <div class="c1-fsc-video-desc">{video.description}</div>
+                    </f:if>
                 </f:else>
             </v:if>
         </f:for>
