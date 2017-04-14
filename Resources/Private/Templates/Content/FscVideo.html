@@ -36,10 +36,10 @@
     </f:section>
 
     <f:section name="videoType">
-        <f:if condition="{video.extension} == 'youtube">
+        <f:if condition="{video.extension} == 'youtube'">
             <f:render section="videoYouTube" arguments="{_all}" />
         </f:if>
-        <f:if condition="{video.extension} == 'vimeo">
+        <f:if condition="{video.extension} == 'vimeo'">
             <f:render section="videoVimeo" arguments="{_all}" />
         </f:if>
 
