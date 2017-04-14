@@ -7,7 +7,7 @@ if (!defined ('TYPO3_MODE')) {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'FSC video content element');
 
 // Hooks
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['c1_fsc_video'] = 'EXT:c1_fsc_video/Classes/Hooks/DataHandler.php:C1\\C1FscVideo\\Hooks\\DataHandler';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['c1_fsc_video'] = 'C1\\C1FscVideo\\Hooks\\DataHandler';
 
 // Add page.ts
 $pageTsConfig = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TSConfig/page.ts');

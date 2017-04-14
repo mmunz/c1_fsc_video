@@ -4,12 +4,8 @@
 
     <f:section name="content">
         <f:for each="{files}" as="file" iteration='i'>
-            <v:if stack="{
-                  0: '{video.autoplay}', 1: '==', 2: '1',
-                  3: 'OR', 4: '{video.extension}', 5: '==', 6: 'mp4',
-                  7: 'OR', 8: '{video.extension}', 9: '==', 10: 'webm'
-                  }">   
 
+            <f:if condition="{video.autoplay} ==1 || {video.extension} == 'mp4' || {video.extension} == 'webm'">
                 <f:then>
                     <div class="c1-fsc-video direct">
                         <f:media file="{file}"></f:media>
@@ -17,10 +13,10 @@
                 </f:then>
                 <f:else>
                     <div id="c{data.uid}" class="c1-fsc-video" data-autoplay="{video.autoplay}" data-provider="{video.extension}" data-videoid="{video.id}" style="padding-bottom: {video.aspectRatio}%">
-                        <f:media 
-                            file="{video.preview.file}"
-                            class="fsc-image-responsive"
-                            width="{video.preview.width}" />
+                        <f:media
+                                file="{video.preview.file}"
+                                class="img-responsive"
+                                width="{video.preview.width}" />
                         <div id="c{data.uid}-player" class="video-player"></div>
                         <a class="fsc-video-play"><span class="fsc-video-play-text sr-only">PLAY</span></a>
                         <f:render section="videoType" arguments="{_all}"></f:render>
@@ -29,7 +25,7 @@
                         <div class="c1-fsc-video-desc">{video.description}</div>
                     </f:if>
                 </f:else>
-            </v:if>
+            </f:if>
         </f:for>
         <v:asset.script path="{f:uri.resource(path: 'Javascript/responsive-video.js', extensionName:'c1_fsc_video')}" />
         <v:asset.style path="{f:uri.resource(path: 'Style/responsive-video.css', extensionName:'c1_fsc_video')}" />
