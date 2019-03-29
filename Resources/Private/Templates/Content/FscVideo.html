@@ -1,5 +1,6 @@
-{namespace v=FluidTYPO3\Vhs\ViewHelpers}
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:v="FluidTYPO3\Vhs\ViewHelpers"
+      data-namespace-typo3-fluid="true">
     <f:layout name="FscVideo" />
 
     <f:section name="content">
@@ -27,7 +28,7 @@
                 </f:else>
             </f:if>
         </f:for>
-        <v:asset.script path="{f:uri.resource(path: 'Javascript/responsive-video.js', extensionName:'c1_fsc_video')}" />
+        <v:asset.script external="1" standalone="1" name="c1fscvideo" path="{f:uri.resource(path: 'Javascript/responsive-video.js', extensionName:'c1_fsc_video')}" />
         <v:asset.style path="{f:uri.resource(path: 'Style/responsive-video.css', extensionName:'c1_fsc_video')}" />
     </f:section>
 
