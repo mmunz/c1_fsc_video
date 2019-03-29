@@ -8,6 +8,8 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 
 /**
  * Class Datamap
@@ -59,7 +61,22 @@ class DataHandler {
                         $this->id = $tceMain->substNEWwithIDs[$identity];
                     }
                 }
-                $this->pid = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $this->id)['pid'];
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+                $statement = $queryBuilder
+                    ->select('pid')
+                    ->from('tt_content')
+                    ->setMaxResults(1)
+                    ->where(
+                        $queryBuilder->expr()->eq('uid', $this->id)
+                    )
+                    ->execute();
+
+                while ($row = $statement->fetch()) {
+                    // Do something with that single row
+                    $this->pid = $row['pid'];
+                }
+
+                //$this->pid = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $this->id)['pid'];
                 $this->data = $tableData[$this->id];
                 if ($this->id && $this->data['CType'] === 'c1_fsc_video') {
                     $files = $this->getVideos($this->id);
