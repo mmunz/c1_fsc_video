@@ -56,9 +56,9 @@ function youtubePlayer(wrapper) {
 
     // player is ready
     function onPlayerReady(event) {
-        document.getElementById(wrapperId).classList.remove("loading");
-        document.getElementById(wrapperId).classList.add("initialized");
-        legalInfo.classList.add("hidden");
+        document.getElementById(wrapperId).classList.remove("c1-fsc-video--loading");
+        document.getElementById(wrapperId).classList.add("c1-fsc-video--initialized");
+        legalInfo.classList.add("c1-fsc-video__legal--hidden");
         event.target.playVideo();
     }
 }
@@ -104,19 +104,19 @@ function vimeoPlayer(wrapper) {
     }
 
     function initPlayer() {
-        wrapper.classList.remove("loading");
-        wrapper.classList.add("initialized");
-        legalInfo.classList.add("hidden");
+        wrapper.classList.remove("c1-fsc-video--loading");
+        wrapper.classList.add("c1-fsc-video--initialized");
+        legalInfo.classList.add("c1-fsc-video__legal--hidden");
     }
 }
 
 document.addEventListener("DOMContentLoaded", function (event) {
-    let playButtons = document.getElementsByClassName('fsc-video-play');
+    let playButtons = document.getElementsByClassName('c1-fsc-video__play');
     Array.prototype.forEach.call(playButtons, function (el) {
         el.onclick = function () {
             let wrapper = el.closest(".c1-fsc-video");
             let provider = wrapper.getAttribute('data-provider');
-            wrapper.classList.add('loading');
+            wrapper.classList.add('c1-fsc-video--loading');
             if (provider === 'youtube') {
                 youtubePlayer(wrapper);
             } else if (provider === 'vimeo') {

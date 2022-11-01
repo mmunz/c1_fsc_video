@@ -5,7 +5,7 @@
     <f:for each="{files}" as="file" iteration='i'>
         <f:if condition="{video.autoplay} == 1 || {video.extension} == 'mp4' || {video.extension} == 'webm'">
             <f:then>
-                <div class="c1-fsc-video direct">
+                <div class="c1-fsc-video c1-fsc-video--direct">
                     <f:media file="{file}"></f:media>
                 </div>
             </f:then>
@@ -18,7 +18,7 @@
                             class="img-responsive"
                             width="{video.preview.width}"/>
                     <div id="c1-fsc-video-{data.uid}-player" class="video-player"></div>
-                    <a class="fsc-video-play"><span class="fsc-video-play-text sr-only">PLAY</span></a>
+                    <a class="c1-fsc-video__play"><span class="c1-fsc-video__play-text sr-only">PLAY</span></a>
 
                     <f:if condition="{settings.showLegalInfo}">
                         <f:if condition="{video.extension} == 'youtube' || {video.extension} == 'vimeo'">
