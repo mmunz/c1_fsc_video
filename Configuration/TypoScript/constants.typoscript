@@ -1,0 +1,7 @@
+tt_content {
+    c1_fsc_video {
+        settings {
+            showLegalInfo = 1
+        }
+    }
+}

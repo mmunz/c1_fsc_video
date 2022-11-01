@@ -1,7 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:layout name="FscVideo"/>
+<f:layout name="Default"/>
 
-<f:section name="content">
+<f:section name="Main">
     <f:for each="{files}" as="file" iteration='i'>
         <f:if condition="{video.autoplay} == 1 || {video.extension} == 'mp4' || {video.extension} == 'webm'">
             <f:then>
@@ -20,8 +20,10 @@
                     <div id="c{data.uid}-player" class="video-player"></div>
                     <a class="fsc-video-play"><span class="fsc-video-play-text sr-only">PLAY</span></a>
 
-                    <f:if condition="{video.extension} == 'youtube' || {video.extension} == 'vimeo'">
-                        <f:render partial="LegalInfo" arguments="{settings: settings, video: video}" />
+                    <f:if condition="{settings.showLegalInfo}">
+                        <f:if condition="{video.extension} == 'youtube' || {video.extension} == 'vimeo'">
+                            <f:render partial="LegalInfo" arguments="{settings: settings, video: video}" />
+                        </f:if>
                     </f:if>
                 </div>
             </f:else>
