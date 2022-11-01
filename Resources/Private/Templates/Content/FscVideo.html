@@ -10,14 +10,14 @@
                 </div>
             </f:then>
             <f:else>
-                <div id="c{data.uid}" class="c1-fsc-video" data-autoplay="{video.autoplay}"
+                <div id="c1-fsc-video-{data.uid}" class="c1-fsc-video" data-autoplay="{video.autoplay}"
                      data-provider="{video.extension}" data-videoid="{video.id}"
                      style="padding-bottom: {video.aspectRatio}%">
                     <f:media
                             file="{video.preview.file}"
                             class="img-responsive"
                             width="{video.preview.width}"/>
-                    <div id="c{data.uid}-player" class="video-player"></div>
+                    <div id="c1-fsc-video-{data.uid}-player" class="video-player"></div>
                     <a class="fsc-video-play"><span class="fsc-video-play-text sr-only">PLAY</span></a>
 
                     <f:if condition="{settings.showLegalInfo}">
