@@ -15,8 +15,8 @@ if (!defined('TYPO3_MODE')) {
 
 $GLOBALS['TCA']['tt_content']['types']['c1_fsc_video'] = array(
     'showitem' => '
-        --palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
-        --palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
+        --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
+        --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.header;header,
         assets,
         image;LLL:EXT:c1_fsc_video/Resources/Private/Language/TCA.xlf:c1_fsc_video_preview_image,        
         --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,

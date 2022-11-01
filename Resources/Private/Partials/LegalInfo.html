@@ -1,0 +1,11 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="c1-fsc-video__legal">
+    <f:if condition="{video.extension} == 'youtube'">
+        <f:variable name="provider"><f:translate key="YouTube" extensionName="c1_fsc_video"/></f:variable>
+    </f:if>
+    <f:if condition="{video.extension} == 'vimeo'">
+        <f:variable name="provider"><f:translate key="Vimeo" extensionName="c1_fsc_video"/></f:variable>
+    </f:if>
+    <f:translate key="legal_info" arguments="{0: provider, 1: provider}" extensionName="c1_fsc_video"/>
+</div>
+</html>

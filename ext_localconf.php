@@ -18,8 +18,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['onlineMediaHelpers']['vimeo'] = C1\C1
 
 // register custom render handlers
 /** @var \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry $rendererRegistry */
-$rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();
-$rendererRegistry->registerRendererClass(C1\C1FscVideo\Rendering\YouTubeRenderer::class);
+$rendererRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+    \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::class
+);
 $rendererRegistry->registerRendererClass(C1\C1FscVideo\Rendering\VimeoRenderer::class);
 unset($rendererRegistry);
 ?>

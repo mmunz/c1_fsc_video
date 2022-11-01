@@ -1,62 +1,48 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:v="FluidTYPO3\Vhs\ViewHelpers"
-      data-namespace-typo3-fluid="true">
-    <f:layout name="FscVideo" />
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="FscVideo"/>
 
-    <f:section name="content">
-        <f:for each="{files}" as="file" iteration='i'>
+<f:section name="content">
+    <f:for each="{files}" as="file" iteration='i'>
+        <f:if condition="{video.autoplay} == 1 || {video.extension} == 'mp4' || {video.extension} == 'webm'">
+            <f:then>
+                <div class="c1-fsc-video direct">
+                    <f:media file="{file}"></f:media>
+                </div>
+            </f:then>
+            <f:else>
+                <div id="c{data.uid}" class="c1-fsc-video" data-autoplay="{video.autoplay}"
+                     data-provider="{video.extension}" data-videoid="{video.id}"
+                     style="padding-bottom: {video.aspectRatio}%">
+                    <f:media
+                            file="{video.preview.file}"
+                            class="img-responsive"
+                            width="{video.preview.width}"/>
+                    <div id="c{data.uid}-player" class="video-player"></div>
+                    <a class="fsc-video-play"><span class="fsc-video-play-text sr-only">PLAY</span></a>
 
-            <f:if condition="{video.autoplay} ==1 || {video.extension} == 'mp4' || {video.extension} == 'webm'">
-                <f:then>
-                    <div class="c1-fsc-video direct">
-                        <f:media file="{file}"></f:media>
-                    </div>
-                </f:then>
-                <f:else>
-                    <div id="c{data.uid}" class="c1-fsc-video" data-autoplay="{video.autoplay}" data-provider="{video.extension}" data-videoid="{video.id}" style="padding-bottom: {video.aspectRatio}%">
-                        <f:media
-                                file="{video.preview.file}"
-                                class="img-responsive"
-                                width="{video.preview.width}" />
-                        <div id="c{data.uid}-player" class="video-player"></div>
-                        <a class="fsc-video-play"><span class="fsc-video-play-text sr-only">PLAY</span></a>
-                        <f:render section="videoType" arguments="{_all}"></f:render>
-                    </div>
-                    <f:if condition="video.description">
-                        <div class="c1-fsc-video-desc">{video.description}</div>
+                    <f:if condition="{video.extension} == 'youtube' || {video.extension} == 'vimeo'">
+                        <f:render partial="LegalInfo" arguments="{settings: settings, video: video}" />
                     </f:if>
-                </f:else>
-            </f:if>
-        </f:for>
-        <v:asset.script external="1" standalone="1" name="c1fscvideo" path="{f:uri.resource(path: 'Javascript/responsive-video.js', extensionName:'c1_fsc_video')}" />
-        <v:asset.style path="{f:uri.resource(path: 'Style/responsive-video.css', extensionName:'c1_fsc_video')}" />
-    </f:section>
-
-    <f:section name="videoType">
-        <f:if condition="{video.extension} == 'youtube'">
-            <f:render section="videoYouTube" arguments="{_all}" />
+                </div>
+            </f:else>
         </f:if>
-        <f:if condition="{video.extension} == 'vimeo'">
-            <f:render section="videoVimeo" arguments="{_all}" />
+        <f:if condition="video.description">
+            <div class="c1-fsc-video-desc">{video.description}</div>
         </f:if>
+    </f:for>
+    <f:asset.script identifier="c1fscvideo"
+                    src="EXT:c1_fsc_video/Resources/Public/JavaScript/responsive-video.js"/>
+    <f:asset.css identifier="c1fscvideo"
+                   href="EXT:c1_fsc_video/Resources/Public/Style/responsive-video.css"/>
+</f:section>
 
-    </f:section>
-
-    <f:section name="videoYouTube">
-        <v:asset.script path="https://www.youtube.com/iframe_api" external="1" name="yt_iframe_api" overwrite="0" standalone="1"/>
-    </f:section>
-    
-    <f:section name="videoVimeo">
-        <v:asset.script path="https://f.vimeocdn.com/js/froogaloop2.min.js" external="1" name="froogaloop" overwrite="0" standalone="1"/>
-    </f:section>
-    
-    <f:section name="media">
-        <f:media
+<f:section name="media">
+    <f:media
             file="{media}"
             width="{media.width}"
             height="{media.height}"
             alt="{media.alternative}"
             title="{media.title}"
-            />
-    </f:section>
+    />
+</f:section>
 </html>

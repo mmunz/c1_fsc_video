@@ -2,6 +2,7 @@
 
 namespace C1\C1FscVideo\Hooks;
 
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\File;
@@ -18,7 +19,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
  */
 class DataHandler {
 
-    protected $id = NULL;
+    protected $identity = NULL;
 
     /**
      * @var string
@@ -56,9 +57,9 @@ class DataHandler {
         foreach ($tceMain->datamap as $table => $tableData) {
             if ($table === 'tt_content') {
                 foreach ($tableData as $identity => $_) {
-                    $this->id = $identity;
+                    $this->identity = $identity;
                     if (strpos($identity, 'NEW') !== FALSE) {
-                        $this->id = $tceMain->substNEWwithIDs[$identity];
+                        $this->identity = $tceMain->substNEWwithIDs[$identity];
                     }
                 }
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
@@ -67,7 +68,7 @@ class DataHandler {
                     ->from('tt_content')
                     ->setMaxResults(1)
                     ->where(
-                        $queryBuilder->expr()->eq('uid', $this->id)
+                        $queryBuilder->expr()->eq('uid', $this->identity)
                     )
                     ->execute();
 
@@ -76,10 +77,10 @@ class DataHandler {
                     $this->pid = $row['pid'];
                 }
 
-                //$this->pid = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $this->id)['pid'];
-                $this->data = $tableData[$this->id];
-                if ($this->id && $this->data['CType'] === 'c1_fsc_video') {
-                    $files = $this->getVideos($this->id);
+                //$this->pid = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $this->identity)['pid'];
+                $this->data = $tableData[$this->identity];
+                if ($this->identity && $this->data['CType'] === 'c1_fsc_video') {
+                    $files = $this->getVideos($this->identity);
                     $video = $files[0];
                     // set upload storage and path for the preview to the same as for the original file
                     $this->storageUid = $video['original']['storage'];
@@ -102,7 +103,7 @@ class DataHandler {
      * @return string
      */
     protected function getUploadFolder() {
-        /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $dispatcher */
+        /** @var Dispatcher $dispatcher */
         $dispatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
         $arguments = array(
             $this->previewUploadFolder,
@@ -123,7 +124,7 @@ class DataHandler {
             'table_local' => 'sys_file',
             'uid_local' => $file->getUid(),
             'tablenames' => 'tt_content',
-            'uid_foreign' => $this->id,
+            'uid_foreign' => $this->identity,
             'fieldname' => 'image',
             'pid' => $this->pid,
         );
@@ -132,16 +133,16 @@ class DataHandler {
             $falData['sys_file_reference']['NEW1234']['alternative'] = $this->oEmbedData['title'];
         };
 
-        $falData['tt_content'][$this->id] = array(
+        $falData['tt_content'][$this->identity] = array(
             'image' => 'NEW1234' // changed automatically
         );
 
         /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $tce */
-        $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\DataHandling\DataHandler'); // create TCE instance
+        $tce = GeneralUtility::makeInstance('TYPO3\CMS\Core\DataHandling\DataHandler'); // create TCE instance
         $tce->start($falData, array());
         $tce->process_datamap();
         if ($tce->errorLog) {
-            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($tce->errorLog, 'Creating file reference for thumbnail failed. TCE->errorLog:');
+            DebuggerUtility::var_dump($tce->errorLog, 'Creating file reference for thumbnail failed. TCE->errorLog:');
         }
     }
 
@@ -165,12 +166,12 @@ class DataHandler {
      */
     protected function onlineMediaPreviewImage($video) {
         $previewFileName = basename($video['original']['name'] . '.jpg');
-        $resourceFactory = ResourceFactory::getInstance();
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         $folder = $resourceFactory->retrieveFileOrFolderObject($this->storageUid . ':' . $this->getUploadFolder());
-        
+
         if ($folder->hasFile($previewFileName)) {
             $fileName = $this->getUploadFolder() . '/' . $previewFileName;
-            $storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository'); // create instance to storage repository
+            $storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository'); // create instance to storage repository
             $storage = $storageRepository->findByUid(1);    // get file storage with uid 1 (this should by default point to your fileadmin/ directory)
             $file = $storage->getFile($fileName); // create file object for the image (the file will be indexed if necessary)
         } else {
@@ -194,8 +195,8 @@ class DataHandler {
 
     protected function getVideos() {
         // get all videos for this CE
-        $fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-        $fileObjects = $fileRepository->findByRelation('tt_content', 'assets', $this->id);
+        $fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+        $fileObjects = $fileRepository->findByRelation('tt_content', 'assets', $this->identity);
         // get Imageobject information
         $files = array();
 
@@ -224,7 +225,8 @@ class DataHandler {
      */
     protected function getOnlineMediaHelper($file) {
         if ($this->onlineMediaHelper === null) {
-            $this->onlineMediaHelper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($file);
+            $helperRegistry = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class);
+            $this->onlineMediaHelper = $helperRegistry->getOnlineMediaHelper($file);
         }
         return $this->onlineMediaHelper;
     }

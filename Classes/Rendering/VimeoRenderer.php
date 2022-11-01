@@ -13,17 +13,18 @@ namespace C1\C1FscVideo\Rendering;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
+use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Vimeo renderer class
  */
-class VimeoRenderer implements \TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface
+class VimeoRenderer implements FileRendererInterface
 {
     /**
      * @var OnlineMediaHelperInterface
@@ -69,7 +70,8 @@ class VimeoRenderer implements \TYPO3\CMS\Core\Resource\Rendering\FileRendererIn
                 $orgFile = $orgFile->getOriginalFile();
             }
             if ($orgFile instanceof File) {
-                $this->onlineMediaHelper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($orgFile);
+                $helperRegistry = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class);
+                $this->onlineMediaHelper = $helperRegistry->getOnlineMediaHelper($orgFile);
             } else {
                 $this->onlineMediaHelper = false;
             }
@@ -100,8 +102,9 @@ class VimeoRenderer implements \TYPO3\CMS\Core\Resource\Rendering\FileRendererIn
 //        if (!empty($options['autoplay'])) {
 //            $urlParams[] = 'autoplay=1';
 //        }
-        
+
         $urlParams[] = 'autoplay=1';
+        $urlParams[] = 'muted=1';
         if (!empty($options['loop'])) {
             $urlParams[] = 'loop=1';
         }
@@ -135,7 +138,7 @@ class VimeoRenderer implements \TYPO3\CMS\Core\Resource\Rendering\FileRendererIn
         }
 
         return sprintf(
-            '<iframe src="%s"%s></iframe>',
+            '<iframe allow="autoplay; encrypted-media" src="%s"%s></iframe>',
             $src,
             empty($attributes) ? '' : ' ' . implode(' ', $attributes)
         );

@@ -1,15 +1,8 @@
 {
     "name": "c1/c1-fsc-video",
     "type": "typo3-cms-extension",
-    "version": "0.1.0",
     "description": "A responsive video element.",
-    "keywords": [
-        "typo3",
-        "TYPO3 CMS",
-        "vimeo",
-        "youtube",
-        "video"
-    ],
+    "keywords": ["typo3", "TYPO3 CMS", "vimeo", "youtube", "video"],
     "homepage": "https://github.com/mmunz/c1_fsc_video",
     "license": "GPL-2.0+",
     "authors": [
@@ -20,11 +13,16 @@
         }
     ],
     "require": {
-        "typo3/cms-core": "<9.6"
+        "typo3/cms-core": "^10.4 || ^11.5"
     },
     "autoload": {
         "psr-4": {
             "C1\\C1FscVideo\\": "Classes/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "c1_fsc_video"
         }
     }
 }

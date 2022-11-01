@@ -60,7 +60,7 @@ class FscVideoProcessor implements DataProcessorInterface {
             $properties = $file->getProperties();
             $processedData['video'] = $properties;
             $processedData['video']['aspectRatio'] = 56.25; // use as default
-            
+
             if ($properties['extension'] == 'youtube' or $properties['extension'] == 'vimeo') {
                 if ( is_numeric($properties['width']) and is_numeric($properties['height']) ) {
                     $processedData['video']['aspectRatio'] = 100 / $properties['width'] * $properties['height'];
@@ -77,7 +77,7 @@ class FscVideoProcessor implements DataProcessorInterface {
         }
         return $processedData;
     }
-    
+
     /**
      * Get online media helper
      *
@@ -91,7 +91,8 @@ class FscVideoProcessor implements DataProcessorInterface {
                 $orgFile = $orgFile->getOriginalFile();
             }
             if ($orgFile instanceof File) {
-                $this->onlineMediaHelper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($orgFile);
+                $helperRegistry = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class);
+                $this->onlineMediaHelper = $helperRegistry->getOnlineMediaHelper($orgFile);
             } else {
                 $this->onlineMediaHelper = false;
             }

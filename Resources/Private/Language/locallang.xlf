@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2015-10-05T13:07:00Z" product-name="fsc_image">
+        <header/>
+        <body>
+            <trans-unit id="legal_info" xml:space="preserve">
+                <source>With a click on play you will allow that this video will be loaded from %s. Personal information may be transferred to %s.</source>
+            </trans-unit>
+            <trans-unit id="YouTube" xml:space="preserve">
+                <source>YouTube</source>
+            </trans-unit>
+            <trans-unit id="Vimeo" xml:space="preserve">
+                <source>Vimeo</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
