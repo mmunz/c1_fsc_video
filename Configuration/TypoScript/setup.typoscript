@@ -3,7 +3,7 @@ tt_content {
     c1_fsc_video {
         templateName = Content/FscVideo
         templateRootPaths.10 = EXT:c1_fsc_video/Resources/Private/Templates/
-        partialRootPaths.10  = EXT:c1_fsc_video/Resources/Private/Partials/
+        partialRootPaths.10 = EXT:c1_fsc_video/Resources/Private/Partials/
         layoutRootPaths.10 = EXT:c1_fsc_video/Resources/Private/Layouts/
         dataProcessing {
             10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor

@@ -1,12 +1,6 @@
 <?php
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:c1_fsc_video/Configuration/TSConfig/page.tsconfig">'
-);
+use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 
 call_user_func(function () {
     // Register Icon
@@ -17,7 +11,7 @@ call_user_func(function () {
         )
     );
     // register custom render handlers
-    /** @var \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry $rendererRegistry */
+    /** @var RendererRegistry $rendererRegistry */
     $rendererRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
         \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::class
     );

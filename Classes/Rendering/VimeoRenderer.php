@@ -89,7 +89,7 @@ class VimeoRenderer implements FileRendererInterface
      * @param bool $usedPathsRelativeToCurrentScript See $file->getPublicUrl()
      * @return string
      */
-    public function render(FileInterface $file, $width, $height, array $options = null, $usedPathsRelativeToCurrentScript = false)
+    public function render(FileInterface $file, $width, $height, array $options = null)
     {
 //        if ($file instanceof FileReference) {
 //            $autoplay = $file->getProperty('autoplay');
@@ -127,9 +127,6 @@ class VimeoRenderer implements FileRendererInterface
         }
         if ((int)$height > 0) {
             $attributes[] = 'height="' . (int)$height . '"';
-        }
-        if (is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->config['config']['doctype'] !== 'html5') {
-            $attributes[] = 'frameborder="0"';
         }
         foreach (['class', 'dir', 'id', 'lang', 'style', 'title', 'accesskey', 'tabindex', 'onclick'] as $key) {
             if (!empty($options[$key])) {

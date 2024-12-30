@@ -2,12 +2,10 @@
 
 namespace C1\C1FscVideo\Hooks;
 
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use Doctrine\DBAL\Exception;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -46,14 +44,22 @@ class DataHandler {
      */
     protected $oEmbedData = [];
 
+    protected OnlineMediaHelperRegistry $onlineMediaHelperRegistry;
+
+    public function __construct() {
+        $this->onlineMediaHelperRegistry = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class);
+    }
+
     /**
      * @param $status
      * @param $table
      * @param $id
      * @param $fieldArray
      * @param $self
+     * @throws Exception
      */
-    public function processDatamap_afterAllOperations($tceMain) {
+    public function processDatamap_afterAllOperations($tceMain): void
+    {
         foreach ($tceMain->datamap as $table => $tableData) {
             if ($table === 'tt_content') {
                 foreach ($tableData as $identity => $_) {
@@ -66,21 +72,18 @@ class DataHandler {
                 $statement = $queryBuilder
                     ->select('pid')
                     ->from('tt_content')
-                    ->setMaxResults(1)
-                    ->where(
-                        $queryBuilder->expr()->eq('uid', $this->identity)
-                    )
-                    ->execute();
+                    ->setMaxResults(1)->where($queryBuilder->expr()->eq('uid', $this->identity))->executeQuery();
 
-                while ($row = $statement->fetch()) {
-                    // Do something with that single row
-                    $this->pid = $row['pid'];
+                $row = $statement->fetchAssociative();
+                $this->pid = $row['pid'] ?? 0;
+
+
+                if (array_key_exists($this->identity, $tableData)) {
+                    $this->data = $tableData[$this->identity];
                 }
 
-                //$this->pid = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $this->identity)['pid'];
-                $this->data = $tableData[$this->identity];
-                if ($this->identity && $this->data['CType'] === 'c1_fsc_video') {
-                    $files = $this->getVideos($this->identity);
+                if (is_array($this->data) && $this->identity && array_key_exists('CType', $this->data) && $this->data['CType'] === 'c1_fsc_video') {
+                    $files = $this->getVideos();
                     $video = $files[0];
                     // set upload storage and path for the preview to the same as for the original file
                     $this->storageUid = $video['original']['storage'];
@@ -97,29 +100,13 @@ class DataHandler {
     }
 
     /**
-     * Get the upload folder
-     * Use the Signal to override the default folder
-     *
-     * @return string
-     */
-    protected function getUploadFolder() {
-        /** @var Dispatcher $dispatcher */
-        $dispatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
-        $arguments = array(
-            $this->previewUploadFolder,
-        );
-        $arguments = $dispatcher->dispatch(__CLASS__, __METHOD__, $arguments);
-        return $arguments[0];
-    }
-
-    /**
      * Create a file reference
      *
      * @param File $file
      * @return void
      */
-    protected function createFileReference($file) {
-        $faldata = array();
+    protected function createFileReference($file): void
+    {
         $falData['sys_file_reference']['NEW1234'] = array(
             'table_local' => 'sys_file',
             'uid_local' => $file->getUid(),
@@ -146,31 +133,19 @@ class DataHandler {
         }
     }
 
-    /**
-     * Get preview image
-     *
-     * @param File $file
-     * @return string
-     */
-    public function getPreviewImage($video) {
+    public function getPreviewImage(array $video): void {
         if ($video['original']['extension'] === 'vimeo' || $video['original']['extension'] === 'youtube') {
             $this->onlineMediaPreviewImage($video);
         }
     }
 
-    /**
-     * Get online media preview image
-     *
-     * @param array $video
-     * @return string
-     */
-    protected function onlineMediaPreviewImage($video) {
+    protected function onlineMediaPreviewImage(array $video): void {
         $previewFileName = basename($video['original']['name'] . '.jpg');
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        $folder = $resourceFactory->retrieveFileOrFolderObject($this->storageUid . ':' . $this->getUploadFolder());
+        $folder = $resourceFactory->retrieveFileOrFolderObject($this->storageUid . ':' . $this->previewUploadFolder);
 
         if ($folder->hasFile($previewFileName)) {
-            $fileName = $this->getUploadFolder() . '/' . $previewFileName;
+            $fileName = $this->previewUploadFolder . '/' . $previewFileName;
             $storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository'); // create instance to storage repository
             $storage = $storageRepository->findByUid(1);    // get file storage with uid 1 (this should by default point to your fileadmin/ directory)
             $file = $storage->getFile($fileName); // create file object for the image (the file will be indexed if necessary)
@@ -201,7 +176,7 @@ class DataHandler {
         $files = array();
 
         foreach ($fileObjects as $key => $value) {
-            $onlineMediaHelper = $this->getOnlineMediaHelper($value->getOriginalFile());
+            $onlineMediaHelper = $this->onlineMediaHelperRegistry->getOnlineMediaHelper($value->getOriginalFile());
             if ($onlineMediaHelper) {
                 $files[$key]['onlineMediaId'] = $onlineMediaHelper->getOnlineMediaId($value->getOriginalFile());
             }
@@ -215,19 +190,5 @@ class DataHandler {
             };
         }
         return $files;
-    }
-
-    /**
-     * Get online media helper
-     *
-     * @param $file
-     * @return bool|OnlineMediaHelperInterface
-     */
-    protected function getOnlineMediaHelper($file) {
-        if ($this->onlineMediaHelper === null) {
-            $helperRegistry = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class);
-            $this->onlineMediaHelper = $helperRegistry->getOnlineMediaHelper($file);
-        }
-        return $this->onlineMediaHelper;
     }
 }

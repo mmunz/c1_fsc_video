@@ -1,16 +1,31 @@
 <?php
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
-
 // c1_fsc_video
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
-    'tt_content', 'CType', [
-    'LLL:EXT:c1_fsc_video/Resources/Private/Language/TCA.xlf:c1_fsc_video',
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
+//\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+//    'tt_content',
+//    'CType',
+//    [
+//        'LLL:EXT:c1_fsc_video/Resources/Private/Language/TCA.xlf:c1_fsc_video',
+//        'c1_fsc_video',
+//        'c1_fsc_video'
+//    ],
+//    'html',
+//    'after'
+//);
+
+ExtensionManagementUtility::addPlugin(
+    [
+        'label' => 'LLL:EXT:c1_fsc_video/Resources/Private/Language/TCA.xlf:c1_fsc_video',
+        'description' => 'LLL:EXT:c1_fsc_video/Resources/Private/Language/TCA.xlf:c1_fsc_video_description',
+        'group' => 'default',
+        'value' => 'c1_fsc_video',
+        'icon' => 'c1_fsc_video',
+    ],
+    'CType',
     'c1_fsc_video',
-    'c1_fsc_video'
-], 'html', 'after'
+
 );
 
 $GLOBALS['TCA']['tt_content']['types']['c1_fsc_video'] = array(
@@ -39,30 +54,15 @@ $GLOBALS['TCA']['tt_content']['types']['c1_fsc_video'] = array(
             'config' => array(
                 'minitems' => 1,
                 'maxitems' => 1,
-                'foreign_selector_fieldTcaOverride' => array(
-                    'config' => array(
-                        'appearance' => array(
-                            'elementBrowserType' => 'file',
-                            'elementBrowserAllowed' => 'youtube,vimeo'
-                        )
-                    )
-                )
+                'allowed' => 'youtube,vimeo',
             ),
         ),
         'image' => array(
             'config' => array(
                 'minitems' => 0,
                 'maxitems' => 1,
-                'foreign_selector_fieldTcaOverride' => array(
-                    'config' => array(
-                        'appearance' => array(
-                            'elementBrowserType' => 'file',
-                            'elementBrowserAllowed' => 'jpg,jpeg,png'
-                        )
-                    )
-                )
+                'allowed' => 'jpg,jpeg,png',
             ),
         )
     )
 );
-?>
