@@ -89,7 +89,7 @@ class VimeoRenderer implements FileRendererInterface
      * @param bool $usedPathsRelativeToCurrentScript See $file->getPublicUrl()
      * @return string
      */
-    public function render(FileInterface $file, $width, $height, array $options = null)
+    public function render(FileInterface $file, $width, $height, array $options = [])
     {
 //        if ($file instanceof FileReference) {
 //            $autoplay = $file->getProperty('autoplay');

@@ -6,12 +6,12 @@ $EM_CONF[$_EXTKEY] = array(
 	'author' => 'Manuel Munz',
 	'author_email' => 't3dev@comuno.net',
     'author_company' => 'comuno.net',
-    'version' => '1.0.0',
+    'version' => '1.1.0',
 	'category' => 'plugin',
     'state' => 'beta',
 	'constraints' => array(
 		'depends' => array(
-			'core' => '13.4.0-13.4.99'
+			'typo3' => '13.4.0-14.3.99'
 		),
 	),
     'autoload' => [

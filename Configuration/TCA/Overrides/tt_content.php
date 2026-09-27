@@ -1,20 +1,10 @@
 <?php
 
-// c1_fsc_video
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-//\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
-//    'tt_content',
-//    'CType',
-//    [
-//        'LLL:EXT:c1_fsc_video/Resources/Private/Language/TCA.xlf:c1_fsc_video',
-//        'c1_fsc_video',
-//        'c1_fsc_video'
-//    ],
-//    'html',
-//    'after'
-//);
+defined('TYPO3') or die();
 
+// c1_fsc_video
 ExtensionManagementUtility::addPlugin(
     [
         'label' => 'LLL:EXT:c1_fsc_video/Resources/Private/Language/TCA.xlf:c1_fsc_video',
@@ -30,18 +20,18 @@ ExtensionManagementUtility::addPlugin(
 
 $GLOBALS['TCA']['tt_content']['types']['c1_fsc_video'] = array(
     'showitem' => '
-        --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
-        --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.header;header,
+        --palette--;;general,
+        --palette--;;header,
         assets,
-        image;LLL:EXT:c1_fsc_video/Resources/Private/Language/TCA.xlf:c1_fsc_video_preview_image,        
+        image;LLL:EXT:c1_fsc_video/Resources/Private/Language/TCA.xlf:c1_fsc_video_preview_image,
         --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
-            --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.frames;frames,
-            --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.appearanceLinks;appearanceLinks,
+            --palette--;;frames,
+            --palette--;;appearanceLinks,
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
             --palette--;;language,
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
             --palette--;;hidden,
-            --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.access;access,
+            --palette--;;access,
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
             categories,
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
